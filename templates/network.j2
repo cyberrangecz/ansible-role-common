@@ -1,14 +1,14 @@
-{%- set common_network = namespace(
+{%- set kypo_common_network = namespace(
     interfaces=[]
 ) -%} 
 {%- for ansible_interface in ansible_interfaces -%} 
-    {%- set common_network.interfaces = common_network.interfaces + [hostvars[inventory_hostname]['ansible_' + ansible_interface]] -%} 
+    {%- set kypo_common_network.interfaces = kypo_common_network.interfaces + [hostvars[inventory_hostname]['ansible_' + ansible_interface]] -%}
 {%- endfor -%}
 
 {%- macro mac_to_interface(mac) -%}
     {{  
         (   
-            common_network.interfaces | selectattr('macaddress', 'defined') |
+            kypo_common_network.interfaces | selectattr('macaddress', 'defined') |
             selectattr('macaddress', 'equalto', mac) | map(attribute='device') | list
         ) [0] | default('')
     }}
@@ -17,7 +17,7 @@
 {%- macro ip_to_interface(ip) -%}
     {{
         (
-            common_network.interfaces | selectattr('ipv4', 'defined') | selectattr('ipv4.address', 'defined') |
+            kypo_common_network.interfaces | selectattr('ipv4', 'defined') | selectattr('ipv4.address', 'defined') |
             selectattr('ipv4.address', 'equalto', ip) | map(attribute='device') | list
         ) [0] | default('')
     }}
@@ -25,6 +25,6 @@
 
 {%- macro get_inactive_interfaces() -%}
     {{
-        common_network.interfaces | selectattr("active", "equalto", False) | list
+        kypo_common_network.interfaces | selectattr("active", "equalto", False) | list
     }}
 {%- endmacro -%}

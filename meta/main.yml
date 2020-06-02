@@ -1,6 +1,6 @@
 
 galaxy_info:
-    role_name: common
+    role_name: kypo-common
     author: Kamil Andoniadis
     description: This role provide common macros, templates or files
     licence: MIT
