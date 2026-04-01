@@ -34,8 +34,19 @@
       (
         common_network.interfaces | selectattr('ipv4', 'defined') | selectattr('ipv4.address', 'defined') | selectattr('macaddress', 'defined') |
         selectattr('macaddress', 'equalto', mac) | map(attribute='ipv4.address') +
-        common_network.interfaces | selectattr('ipv4', 'sequence') | selectattr('macaddress', 'defined') |
+        common_network.interfaces | rejectattr('ipv4', 'mapping') | selectattr('macaddress', 'defined') |
         selectattr('macaddress', 'equalto', mac) | map(attribute='ipv4.0.address')
+      ) [0] | default('')
+    }}
+{%- endmacro -%}
+
+{%- macro mac_to_network_prefix(mac) -%}
+    {{
+      (
+        common_network.interfaces | selectattr('ipv4', 'defined') | selectattr('ipv4.prefix', 'defined') | selectattr('macaddress', 'defined') |
+        selectattr('macaddress', 'equalto', mac) | map(attribute='ipv4.prefix') +
+        common_network.interfaces | rejectattr('ipv4', 'mapping') | selectattr('macaddress', 'defined') |
+        selectattr('macaddress', 'equalto', mac) | map(attribute='ipv4.0.netmask') | map('regex_replace', '^', '0.0.0.0/') | ipaddr('prefix')
       ) [0] | default('')
     }}
 {%- endmacro -%}
