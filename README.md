@@ -19,6 +19,8 @@ Files
     Macros
 
     * `mac_to_interface(mac)` - Return interface name (e.g. eth0) specified by the MAC address, or an empty string if the interface does not exist.
+    * `mac_to_ip(mac)` - Return the IP of the interface specified by the MAC address, or an empty string if the interface does not exist.
+    * `mac_to_network_prefix(mac)` - Return network prefix (e.g. 24) of the interface specified by the MAC address, or an empty string if the interface does not exist.
     * `ip_to_interface(ip)` - Return interface name (e.g. eth0) specified by the IP address, or an empty string if the interface does not exist.
     * `get_inactive_interfaces()` - Return sublist of `common_network.interfaces` with only inactive interfaces.
 
